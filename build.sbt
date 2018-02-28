@@ -4,7 +4,7 @@ name := "EngineNode"
 
 version := "1.0"
 
-mainClass in (Compile, run) := Some("com.engine.node.EngineNodeMain")
+mainClass in (Compile, run) := Some("com.engine.node.main.EngineNodeMain")
 
 val spring = "5.0.4.RELEASE"
 val springBoot = "1.5.10.RELEASE"
