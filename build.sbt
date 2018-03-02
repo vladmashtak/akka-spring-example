@@ -16,6 +16,8 @@ lazy val root = project.in(file(".")).enablePlugins(JavaServerAppPackaging).sett
     "org.springframework.boot" % "spring-boot-starter" % springBoot,
     "com.typesafe.akka" %% "akka-actor" % akkaVersion,
     "com.typesafe.akka" %% "akka-remote" % akkaVersion,
-    "com.typesafe.akka" %% "akka-cluster" % akkaVersion
+    "com.typesafe.akka" %% "akka-cluster" % akkaVersion,
+    "com.typesafe.akka" %% "akka-cluster-tools" % akkaVersion,
+    "com.typesafe.akka" %% "akka-cluster-metrics" % akkaVersion
   )
 )

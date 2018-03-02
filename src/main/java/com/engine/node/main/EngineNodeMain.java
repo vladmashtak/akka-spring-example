@@ -2,6 +2,7 @@ package com.engine.node.main;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import akka.cluster.ClusterActorRefProvider;
 import com.engine.node.actors.EngineNode;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,8 +19,8 @@ public class EngineNodeMain {
         ActorSystem system = ctx.getBean(ActorSystem.class);
 
         // use the Spring Extension to create top level supervisor for a named actor bean
-        ActorRef supervisor = system.actorOf(EngineNode.props(system), EngineNode.ACTOR_NAME);
+        ActorRef engine = system.actorOf(EngineNode.props(system), EngineNode.ACTOR_NAME);
 
-        supervisor.tell("random number", ActorRef.noSender());
+        // engine.tell(new EngineNode.Message(), ActorRef.noSender());
     }
 }

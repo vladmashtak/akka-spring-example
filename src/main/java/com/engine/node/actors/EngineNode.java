@@ -1,14 +1,19 @@
 package com.engine.node.actors;
 
 import akka.actor.AbstractActor;
+import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
+import akka.cluster.Cluster;
+import akka.cluster.ClusterEvent.MemberEvent;
+import akka.cluster.ClusterEvent.UnreachableMember;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.engine.node.utils.SpringExtension;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import static akka.cluster.ClusterEvent.initialStateAsEvents;
 
 @Component("EngineNode")
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -20,24 +25,33 @@ public class EngineNode extends AbstractActor {
         return SpringExtension.SpringExtProvider.get(system).props(ACTOR_NAME);
     }
 
-    private final LoggingAdapter log = Logging.getLogger(getContext().getSystem(), this);
+    public static class Message {}
 
-    // private final ActorRef demoChildActor = getContext().actorOf(DemoActor.props(42), "demo-actor");
+    private final ActorSystem system = getContext().getSystem();
 
+    private final Cluster cluster = Cluster.get(system);
+
+    private final LoggingAdapter log = Logging.getLogger(system, this);
+
+    // private final ActorRef demoChildActor = getContext().actorOf(DemoActor.getProps(42), "demo-actor");
+
+    // subscribe to cluster changes
     @Override
     public void preStart() {
-        log.info("Application preStart");
+        log.info("Application started");
+        cluster.subscribe(getSelf(), initialStateAsEvents(), MemberEvent.class, UnreachableMember.class);
     }
 
     @Override
     public void postStop() {
         log.info("Application stopped");
+        cluster.unsubscribe(getSelf());
     }
 
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .matchAny(o -> log.info("received unknown message"))
+                .match(Message.class, o -> log.info("Get Message"))
                 .build();
     }
 

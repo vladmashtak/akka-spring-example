@@ -6,7 +6,7 @@ import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
 public class DemoActor extends AbstractActor {
-    public static Props props(Integer magicNumber) {
+    public static Props getProps(Integer magicNumber) {
         return Props.create(DemoActor.class, () -> new DemoActor(magicNumber));
     }
 
