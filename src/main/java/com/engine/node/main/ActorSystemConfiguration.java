@@ -26,7 +26,6 @@ class ActorSystemConfiguration {
     @Bean
     public ActorSystem actorSystem() {
         final Config config = ConfigFactory.load("conf/application.conf");
-        System.out.println(config);
         ActorSystem system = ActorSystem.create("application", config);
         // initialize the application context in the Akka Spring Extension
         SpringExtProvider.get(system).initialize(applicationContext);
