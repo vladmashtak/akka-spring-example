@@ -52,6 +52,7 @@ public class EngineNode extends AbstractActor {
     public Receive createReceive() {
         return receiveBuilder()
                 .match(Message.class, o -> log.info("Get Message"))
+                .matchAny(m -> log.info("Test message: " + m))
                 .build();
     }
 
