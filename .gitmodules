@@ -1,0 +1,3 @@
+[submodule "akka-play-spring-messages"]
+	path = akka-play-spring-messages
+	url = https://github.com/vladmashtak/akka-play-spring-messages.git

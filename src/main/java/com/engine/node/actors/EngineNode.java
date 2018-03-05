@@ -1,12 +1,14 @@
 package com.engine.node.actors;
 
 import akka.actor.AbstractActor;
-import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.cluster.Cluster;
 import akka.cluster.ClusterEvent.MemberEvent;
 import akka.cluster.ClusterEvent.UnreachableMember;
+import akka.cluster.metrics.ClusterMetricsChanged;
+import akka.cluster.metrics.ClusterMetricsExtension;
+import akka.cluster.metrics.NodeMetrics;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.engine.node.utils.SpringExtension;
@@ -25,35 +27,42 @@ public class EngineNode extends AbstractActor {
         return SpringExtension.SpringExtProvider.get(system).props(ACTOR_NAME);
     }
 
-    public static class Message {}
-
     private final ActorSystem system = getContext().getSystem();
 
     private final Cluster cluster = Cluster.get(system);
 
-    private final LoggingAdapter log = Logging.getLogger(system, this);
+    private final ClusterMetricsExtension extension = ClusterMetricsExtension.get(system);
 
-    // private final ActorRef demoChildActor = getContext().actorOf(DemoActor.getProps(42), "demo-actor");
+    private final LoggingAdapter logger = Logging.getLogger(system, this);
 
-    // subscribe to cluster changes
     @Override
     public void preStart() {
-        log.info("Application started");
+        logger.info("Engine started");
+        extension.subscribe(getSelf());
         cluster.subscribe(getSelf(), initialStateAsEvents(), MemberEvent.class, UnreachableMember.class);
     }
 
     @Override
     public void postStop() {
-        log.info("Application stopped");
+        logger.info("Engine stopped");
+        extension.unsubscribe(getSelf());
         cluster.unsubscribe(getSelf());
     }
 
     @Override
     public Receive createReceive() {
         return receiveBuilder()
-                .match(Message.class, o -> log.info("Get Message"))
-                .matchAny(m -> log.info("Test message: " + m))
+                .match(ClusterMetricsChanged.class, clusterMetrics -> {
+                    for (NodeMetrics nodeMetrics : clusterMetrics.getNodeMetrics()) {
+                        if (nodeMetrics.address().equals(cluster.selfAddress())) {
+                            // logger.info(new Message.Metrics(nodeMetrics).toString());
+                        }
+                    }
+                })
+                .matchEquals("Hello", s -> {
+                    logger.info("Get Message: " + s + " | " + getSender());
+                    getSender().tell("World", getSelf());
+                })
                 .build();
     }
-
 }
