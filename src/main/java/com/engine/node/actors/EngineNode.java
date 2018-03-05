@@ -55,7 +55,7 @@ public class EngineNode extends AbstractActor {
                 .match(ClusterMetricsChanged.class, clusterMetrics -> {
                     for (NodeMetrics nodeMetrics : clusterMetrics.getNodeMetrics()) {
                         if (nodeMetrics.address().equals(cluster.selfAddress())) {
-                            // logger.info(new Message.Metrics(nodeMetrics).toString());
+                            // logger.info(new Metrics(nodeMetrics).toString());
                         }
                     }
                 })

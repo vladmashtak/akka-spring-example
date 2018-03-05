@@ -10,9 +10,10 @@ val spring = "5.0.4.RELEASE"
 val springBoot = "1.5.10.RELEASE"
 val akkaVersion = "2.5.10"
 
-lazy val messages = project.in(file("akka-play-spring-messages"))
+//lazy val messages = project.in(file("akka-play-spring-messages"))
 
-lazy val root = project.in(file(".")).dependsOn(messages).enablePlugins(JavaServerAppPackaging)
+lazy val root = project.in(file(".")).enablePlugins(JavaServerAppPackaging)//.aggregate(messages).dependsOn(messages)
+
 libraryDependencies ++= Seq(
   "org.springframework" % "spring-context" % spring,
   "org.springframework.boot" % "spring-boot-starter" % springBoot,
