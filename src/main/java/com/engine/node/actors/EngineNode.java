@@ -12,6 +12,7 @@ import akka.cluster.metrics.NodeMetrics;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.engine.node.extensions.SpringExtension;
+import com.engine.node.protocols.MetricProtocol;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -55,7 +56,7 @@ public class EngineNode extends AbstractActor {
                 .match(ClusterMetricsChanged.class, clusterMetrics -> {
                     for (NodeMetrics nodeMetrics : clusterMetrics.getNodeMetrics()) {
                         if (nodeMetrics.address().equals(cluster.selfAddress())) {
-                            // logger.info(new Metrics(nodeMetrics).toString());
+                            logger.info(new MetricProtocol(nodeMetrics).toString());
                         }
                     }
                 })
