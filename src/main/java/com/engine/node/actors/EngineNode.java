@@ -65,21 +65,21 @@ public class EngineNode extends AbstractActor {
 
     @Override
     public Receive createReceive() {
-        return receiveBuilder()
-                .match(ClusterMetricsChanged.class, clusterMetrics -> {
+        /*                .match(ClusterMetricsChanged.class, clusterMetrics -> {
                     for (NodeMetrics nodeMetrics : clusterMetrics.getNodeMetrics()) {
                         if (nodeMetrics.address().equals(cluster.selfAddress())) {
-                            logger.info(new MetricProtocol(nodeMetrics).toString());
+                            logger.info(nodeMetrics.toString());
                         }
                     }
-                })
-                .matchEquals("GetStatisticService", s -> {
+                })*/
+        return receiveBuilder()
+                .matchEquals("GetStatisticService", s ->
                     pipe(supplyAsync(() -> statisticService
                             .getAllSessionTraffic()
                             .stream()
                             .map(SessionTraffic::toString)
-                            .collect(Collectors.toList())), system.dispatcher()).to(getSender());
-                })
+                            .collect(Collectors.toList())), system.dispatcher()).to(getSender())
+                )
                 .build();
     }
 }
