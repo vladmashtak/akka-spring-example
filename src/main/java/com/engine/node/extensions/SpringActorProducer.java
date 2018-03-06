@@ -1,4 +1,4 @@
-package com.engine.node.utils;
+package com.engine.node.extensions;
 
 import akka.actor.Actor;
 import akka.actor.IndirectActorProducer;

@@ -1,4 +1,4 @@
-package com.engine.node.utils;
+package com.engine.node.extensions;
 
 import akka.actor.AbstractExtensionId;
 import akka.actor.ExtendedActorSystem;

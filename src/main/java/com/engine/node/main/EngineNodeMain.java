@@ -19,8 +19,6 @@ public class EngineNodeMain {
         ActorSystem system = ctx.getBean(ActorSystem.class);
 
         // use the Spring Extension to create top level supervisor for a named actor bean
-        ActorRef engine = system.actorOf(EngineNode.props(system), EngineNode.ACTOR_NAME);
-
-        // engine.tell(new EngineNode.Message(), ActorRef.noSender());
+        system.actorOf(EngineNode.props(system), EngineNode.ACTOR_NAME);
     }
 }

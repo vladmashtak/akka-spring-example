@@ -11,7 +11,7 @@ import akka.cluster.metrics.ClusterMetricsExtension;
 import akka.cluster.metrics.NodeMetrics;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import com.engine.node.utils.SpringExtension;
+import com.engine.node.extensions.SpringExtension;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
