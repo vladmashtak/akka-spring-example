@@ -1,16 +1,16 @@
 package com.engine.node.main;
 
-import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
-import akka.cluster.ClusterActorRefProvider;
 import com.engine.node.actors.EngineNode;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
-@ImportResource("classpath*:spring/root-context.xml")
+@ImportResource("classpath:spring/root-context.xml")
+@PropertySource("classpath:conf/application.properties")
 public class EngineNodeMain {
     public static void main(String[] args) {
         ConfigurableApplicationContext ctx = SpringApplication.run(EngineNodeMain.class, args);

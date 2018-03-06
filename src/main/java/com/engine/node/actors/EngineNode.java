@@ -12,11 +12,21 @@ import akka.cluster.metrics.NodeMetrics;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.engine.node.extensions.SpringExtension;
+import com.engine.node.mongo.entities.SessionTraffic;
 import com.engine.node.protocols.MetricProtocol;
+import com.engine.node.service.StatisticService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 import static akka.cluster.ClusterEvent.initialStateAsEvents;
+import static akka.pattern.PatternsCS.pipe;
 
 @Component("EngineNode")
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -27,6 +37,9 @@ public class EngineNode extends AbstractActor {
     public static Props props(ActorSystem system) {
         return SpringExtension.SpringExtProvider.get(system).props(ACTOR_NAME);
     }
+
+    @Autowired
+    private StatisticService statisticService;
 
     private final ActorSystem system = getContext().getSystem();
 
@@ -60,9 +73,13 @@ public class EngineNode extends AbstractActor {
                         }
                     }
                 })
-                .matchEquals("Hello", s -> {
-                    logger.info("Get Message: " + s + " | " + getSender());
-                    getSender().tell("World", getSelf());
+                .matchEquals("GetStatisticService", s -> {
+                    logger.info("GetStatisticService: " + s + " | " + getSender());
+//                    pipe(supplyAsync(() -> statisticService
+//                            .getAllSessionTraffic()
+//                            .stream()
+//                            .map(SessionTraffic::toString)
+//                            .collect(Collectors.toList())), system.dispatcher()).to(getSender());
                 })
                 .build();
     }

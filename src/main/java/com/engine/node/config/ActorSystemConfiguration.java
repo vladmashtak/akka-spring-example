@@ -1,4 +1,4 @@
-package com.engine.node.main;
+package com.engine.node.config;
 
 import akka.actor.ActorSystem;
 import com.typesafe.config.Config;

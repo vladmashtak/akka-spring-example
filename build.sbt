@@ -13,7 +13,9 @@ val akkaVersion = "2.5.10"
 lazy val root = project.in(file(".")).enablePlugins(JavaServerAppPackaging)
 
 libraryDependencies ++= Seq(
+  "javax.persistence" % "persistence-api" % "1.0.2",
   "org.springframework" % "spring-context" % spring,
+  "org.springframework.boot" % "spring-boot-starter-data-mongodb" % springBoot,
   "org.springframework.boot" % "spring-boot-starter" % springBoot,
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
   "com.typesafe.akka" %% "akka-remote" % akkaVersion,

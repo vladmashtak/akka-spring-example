@@ -10,10 +10,12 @@ import java.io.Serializable;
 public class MetricProtocol implements Serializable {
     private Cpu cpu;
     private HeapMemory heap;
+    private String nodeAddress;
 
     public MetricProtocol(NodeMetrics nodeMetrics) {
         this.cpu = StandardMetrics.extractCpu(nodeMetrics);
         this.heap = StandardMetrics.extractHeapMemory(nodeMetrics);
+        this.nodeAddress = nodeMetrics.address().toString();
     }
 
     public Cpu getCpu() {
@@ -27,7 +29,8 @@ public class MetricProtocol implements Serializable {
     @Override
     public String toString() {
         StringBuilder metrics = new StringBuilder()
-                .append("Metrics { ");
+                .append(nodeAddress)
+                .append(" { ");
 
         if (heap != null) {
             double heapUsed = ((double) heap.used()) / 1024 / 1024;
