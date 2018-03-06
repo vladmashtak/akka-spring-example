@@ -74,12 +74,11 @@ public class EngineNode extends AbstractActor {
                     }
                 })
                 .matchEquals("GetStatisticService", s -> {
-                    logger.info("GetStatisticService: " + s + " | " + getSender());
-//                    pipe(supplyAsync(() -> statisticService
-//                            .getAllSessionTraffic()
-//                            .stream()
-//                            .map(SessionTraffic::toString)
-//                            .collect(Collectors.toList())), system.dispatcher()).to(getSender());
+                    pipe(supplyAsync(() -> statisticService
+                            .getAllSessionTraffic()
+                            .stream()
+                            .map(SessionTraffic::toString)
+                            .collect(Collectors.toList())), system.dispatcher()).to(getSender());
                 })
                 .build();
     }
