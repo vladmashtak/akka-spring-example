@@ -9,8 +9,6 @@ import java.util.List;
 
 @Service
 public class StatisticService {
-    private int sessionTrafficStartRange;
-    private final int sessionTrafficShift = 100;
     private final SessionTrafficRepository sessionTrafficRepository;
 
     @Autowired
@@ -19,12 +17,8 @@ public class StatisticService {
     }
 
     public List<SessionTraffic> getAllSessionTraffic() {
-        List<SessionTraffic> sessionTraffic = sessionTrafficRepository
+        return sessionTrafficRepository
                 .findAll()
-                .subList(sessionTrafficStartRange, sessionTrafficStartRange + sessionTrafficShift);
-
-        sessionTrafficStartRange += sessionTrafficShift;
-
-        return sessionTraffic;
+                .subList(0, 100);
     }
 }

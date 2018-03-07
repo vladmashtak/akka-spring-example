@@ -1,7 +1,7 @@
 package com.engine.node.main;
 
 import akka.actor.ActorSystem;
-import com.engine.node.actors.EngineNode;
+import com.engine.node.actors.EngineNodeActor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -19,6 +19,6 @@ public class EngineNodeMain {
         ActorSystem system = ctx.getBean(ActorSystem.class);
 
         // use the Spring Extension to create top level supervisor for a named actor bean
-        system.actorOf(EngineNode.props(system), EngineNode.ACTOR_NAME);
+        system.actorOf(EngineNodeActor.props(system), EngineNodeActor.ACTOR_NAME);
     }
 }
