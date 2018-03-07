@@ -26,6 +26,10 @@ public class MetricProtocol implements Serializable {
         return heap;
     }
 
+    public String getNodeAddress() {
+        return nodeAddress;
+    }
+
     @Override
     public String toString() {
         StringBuilder metrics = new StringBuilder()

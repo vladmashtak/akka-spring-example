@@ -1,6 +1,8 @@
 package com.engine.node.config;
 
+import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
+import com.engine.node.actors.EngineNodeActor;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,6 @@ import static com.engine.node.extensions.SpringExtension.SpringExtProvider;
  */
 @Configuration
 class ActorSystemConfiguration {
-
     // the application context is needed to initialize the Akka Spring Extension
     @Autowired
     private ApplicationContext applicationContext;
@@ -30,6 +31,14 @@ class ActorSystemConfiguration {
         // initialize the application context in the Akka Spring Extension
         SpringExtProvider.get(system).initialize(applicationContext);
         return system;
+    }
+
+    @Bean
+    public ActorRef engineNodeActor() {
+        // get hold of the actor system
+        final ActorSystem system = applicationContext.getBean(ActorSystem.class);
+        // use the Spring Extension to create top level supervisor for a named actor bean
+        return system.actorOf(EngineNodeActor.props(system), EngineNodeActor.ACTOR_NAME);
     }
 }
 
