@@ -4,11 +4,7 @@ import akka.actor.AbstractActor;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.cluster.Cluster;
-import akka.cluster.ClusterEvent;
 import akka.cluster.ClusterEvent.MemberUp;
-import akka.cluster.ClusterEvent.MemberLeft;
-import akka.cluster.ClusterEvent.MemberEvent;
-import akka.cluster.ClusterEvent.MemberExited;
 import akka.cluster.ClusterEvent.UnreachableMember;
 import akka.cluster.Member;
 import akka.cluster.metrics.ClusterMetricsChanged;
@@ -17,7 +13,6 @@ import akka.cluster.metrics.NodeMetrics;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.engine.node.extensions.SpringExtension;
-import com.engine.node.mongo.entities.SessionTraffic;
 import com.engine.node.protocols.MetricProtocol;
 import com.engine.node.service.StatisticService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +20,8 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.concurrent.CompletableFuture.supplyAsync;
@@ -107,11 +104,11 @@ public class EngineNodeActor extends AbstractActor {
     }
 
 
-    private void statisticService(String s) {
-        pipe(supplyAsync(() -> statisticService
-                .getAllSessionTraffic()
-                .stream()
-                .map(SessionTraffic::toString)
-                .collect(Collectors.toList())), system.dispatcher()).to(getSender());
+    private void statisticService(String s) throws NullPointerException {
+        pipe(supplyAsync(() -> {
+            List<String> sessions = new ArrayList<>();
+            sessions.add("1");
+            return sessions;
+        }), system.dispatcher()).to(getSender());
     }
 }

@@ -9,7 +9,6 @@ import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
 @ImportResource("classpath:spring/root-context.xml")
-@PropertySource("classpath:conf/application.properties")
 public class EngineNodeMain {
     public static void main(String[] args) {
         ConfigurableApplicationContext ctx = SpringApplication.run(EngineNodeMain.class, args);

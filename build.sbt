@@ -15,11 +15,11 @@ lazy val root = project.in(file(".")).enablePlugins(JavaServerAppPackaging)
 libraryDependencies ++= Seq(
   "javax.persistence" % "persistence-api" % "1.0.2",
   "org.springframework" % "spring-context" % spring,
-  "org.springframework.boot" % "spring-boot-starter-data-mongodb" % springBoot,
   "org.springframework.boot" % "spring-boot-starter" % springBoot,
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
   "com.typesafe.akka" %% "akka-remote" % akkaVersion,
   "com.typesafe.akka" %% "akka-cluster" % akkaVersion,
   "com.typesafe.akka" %% "akka-cluster-tools" % akkaVersion,
-  "com.typesafe.akka" %% "akka-cluster-metrics" % akkaVersion
+  "com.typesafe.akka" %% "akka-cluster-metrics" % akkaVersion,
+  "com.typesafe.akka" %% "akka-testkit" % "2.5.11" % Test
 )
